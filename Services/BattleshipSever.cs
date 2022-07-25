@@ -14,11 +14,6 @@ public class BattleshipServer : IGameServer<BattleshipGame>
 
     public IEnumerable<BattleshipGame> AvailableGames()
     {
-        Console.WriteLine("Checking bs availa");
-        foreach (var g in GameInstances)
-        {
-            Console.WriteLine(g.Value);
-        }
         return GameInstances.Select(item => item.Value)
             .Where(game => !game.GameIsInvalid
                            && !game.IsFull);

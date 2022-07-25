@@ -8,7 +8,7 @@ public class Ship
     }
 
     public List<BoardCell> ShipCells { get; private set; } = new();
-    public int Length { get; }
+    private int Length { get; }
 
     public bool SetPosition(int startCol, int startRow, Direction direction,
         Dictionary<Tuple<int, int>, BoardCell> fleetCells)

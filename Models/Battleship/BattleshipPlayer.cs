@@ -8,7 +8,7 @@ public class BattleshipPlayer
     }
 
     public Player Player { get; }
-    public Ships Ships { get; set; } = new();
+    public Ships Ships { get; private set; } = new();
     public BattleshipGameBoard? BattleshipGameBoard { get; private set; }
 
     public void Reset()

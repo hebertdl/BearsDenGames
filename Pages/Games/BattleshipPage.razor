@@ -149,7 +149,7 @@
         if (Game != null) Game.UpdateGamePlayers += PlayerRefresh;
     }
 
-    public void Dispose()
+    private void Dispose()
     {
         if (Game != null) Game.UpdateGameState -= Refresh;
     }

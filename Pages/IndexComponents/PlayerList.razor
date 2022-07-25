@@ -4,13 +4,13 @@
     { 
         <div class="MainList-Grid">
             <div class="MainList-Name">
-                @player?.PlayerName
+                @player.PlayerName
             </div>
             <div class="MainList-GameType">
-                @player?.CurrentGame?.GameType
+                @player.CurrentGame?.GameType
             </div>
             <div class="MainList-GameName">
-                @player?.CurrentGame?.GameName
+                @player.CurrentGame?.GameName
             </div>
         </div>
         <hr/> 
@@ -32,9 +32,5 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
-    {
-        BearsDenGameServer.PlayerServer.PlayerListUpdated -= Refresh;
-    }
 
 }

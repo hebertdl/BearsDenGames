@@ -44,17 +44,11 @@
             StateHasChanged();
             return;
         }
-
         if (Player == null) return;
         BattleshipPlayer bsPlayer = new(Player);
         Player.CurrentGame = new(game.GameName, GameType.Battleship);
         game.AddPlayer(bsPlayer);
         NavManager.NavigateTo("Battleship");
-    }
-
-    public void Dispose()
-    {
-        BearsDenGameServer.BattleshipServer.BsGameListUpdated -= Refresh;
     }
 
 }

@@ -13,7 +13,4 @@ public class ShipCell
     public bool IsStern { get; }
     public Direction Direction { get; }
 
-    public static void OnHit()
-    {
-    }
 }

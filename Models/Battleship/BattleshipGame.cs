@@ -66,9 +66,7 @@ public class BattleshipGame : Game<BattleshipPlayer>
         var endingPlayer = PlayerTurns.Dequeue();
         PlayerTurns.Enqueue(endingPlayer);
         UpdateLastActivity();
-        if (PlayerTurns.Peek().Ships.RemainingHits == 0)
-            UpdateGameState?.Invoke(GameState.Complete);
-        else UpdateGameState?.Invoke(GameState.Ready);
+        UpdateGameState?.Invoke(PlayerTurns.Peek().Ships.RemainingHits == 0 ? GameState.Complete : GameState.Ready);
     }
     
     public override int PlayerCount()

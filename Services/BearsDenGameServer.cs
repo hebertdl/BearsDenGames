@@ -16,11 +16,6 @@ public class BearsDenGameServer
 
     public IEnumerable<CurrentGame> AvailableGames()
     {
-        Console.WriteLine("Looking for games");
-        foreach (var bsg in BattleshipServer.AvailableGames())
-        {
-            Console.WriteLine(bsg.GameName);
-        }
         return BattleshipServer.AvailableGames()
             .Select(availGame => new CurrentGame(availGame.GameName, GameType.Battleship)).ToList();
     }

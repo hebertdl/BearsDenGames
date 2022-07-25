@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace BearsDenGames.Models.Battleship;
+﻿namespace BearsDenGames.Models.Battleship;
 
 public class Ships
 {

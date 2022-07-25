@@ -77,14 +77,6 @@
         }
     }
     
-    private void checkGameStatus()
-    {
-        if (BattleshipPlayer?.Ships.RemainingHits == 0)
-        {
-            
-        }
-    }
-
     private void OnCellClick(BoardCell boardCell)
     {
         if (!IsOpponent || GameState != GameState.Ready) return;
@@ -94,9 +86,7 @@
         if (!boardCell.Active) return;
         boardCell.Active = false;
         Game?.EndTurn();
-        checkGameStatus();
         StateHasChanged();
-        
     }
 
     private BoardCell? GetCell(int col, int row)

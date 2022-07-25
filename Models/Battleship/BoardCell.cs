@@ -17,13 +17,6 @@ public class BoardCell
     public bool Active { get; set; } = true;
     private ShipCell? ShipCell { get; }
 
-    public bool OnHit()
-    {
-        if (ShipCell == null) return false;
-        ShipCell.OnHit();
-        return true;
-    }
-
     public string ShipCellStyle(bool isOpponent)
     {
         if (ShipCell == null || isOpponent) return "";
@@ -36,7 +29,6 @@ public class BoardCell
             sbRtn.Append(" BsShipCell");
         return sbRtn.ToString();
     }
-
     public string CellStyle()
     {
         var sbRtn = new StringBuilder();
@@ -46,10 +38,5 @@ public class BoardCell
             sbRtn.Append(Active ? " " : " BsCellCircle BsCellHit ");
 
         return sbRtn.ToString();
-    }
-
-    private string WaterCellStyle()
-    {
-        return Active ? " " : " BsCellMiss ";
     }
 }

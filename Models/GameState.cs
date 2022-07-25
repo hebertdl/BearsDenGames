@@ -4,6 +4,5 @@ public enum GameState
 {
     Setup,
     Ready,
-    Active,
     Complete
 }
