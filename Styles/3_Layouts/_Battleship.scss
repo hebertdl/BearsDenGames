@@ -1,0 +1,76 @@
+﻿
+.BsPageMain {
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: auto auto auto 1fr;
+}
+
+.BsPage-GameTitle {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.BsPage-GameControls {
+    margin-top: 4em;
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-right: 2em;
+    margin-left: 2em;
+    height: 100%;
+}
+
+.BsPage-PlayerBoard {
+    grid-column: 1;
+    grid-row: 2;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.BsPage-OpponentBoard {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+
+.BsPage-ControlGrid {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 5em 5em 1fr 5em;
+    grid-template-columns: auto;
+}
+
+.BsPage-Randomize {
+    grid-column: 1;
+    grid-row: 1;
+
+    .GlassButton {
+        width: 100%;
+    }
+}
+
+
+.BsPage-Ready {
+    grid-column: 1;
+    grid-row: 2;
+
+    .GlassButton {
+        width: 100%;
+    }
+}
+
+
+.BsPage-Leave {
+    grid-column: 1;
+    grid-row: 4;
+    margin-top: -1.5em;
+
+    .GlassButton {
+        width: 100%;
+    }
+}

@@ -1,0 +1,48 @@
+<ModalScreen>
+    <Header>
+        <h3>Sign In</h3>
+    </Header>
+    <Body>
+    <MatTextField Style="width:100%" class="FullWidthInput" @bind-Value="@PlayerName" Label="Name"></MatTextField>
+    </Body>
+    <Footer>
+        <MatButton class="GlassButton" Disabled="@Disabled" OnClick="@CreatePlayer" Label="Sign In"></MatButton>
+    </Footer>
+</ModalScreen>
+@inject BearsDenGameServer BearsDenGameServer
+
+@code {
+
+    [Parameter]
+    public EventCallback<Player> PlayerCreated { get; set; }
+
+    private string _playerName = "";
+
+    private string PlayerName
+    {
+        get => _playerName;
+        set
+        {
+            _playerName = value;
+            Validate();
+        }
+    }
+
+    private bool Disabled { get; set; } = true;
+
+    private void Validate()
+    {
+        if (PlayerName == "") Disabled = true;
+        if (BearsDenGameServer.PlayerServer.GetPlayer(PlayerName) != null) Disabled = true;
+        Disabled = false;
+    }
+
+
+    private void CreatePlayer()
+    {
+        Player player = new(PlayerName);
+        BearsDenGameServer.PlayerServer.AddPlayer(player);
+        PlayerCreated.InvokeAsync(player);
+    }
+
+}

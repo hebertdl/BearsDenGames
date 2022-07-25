@@ -1,0 +1,69 @@
+@using BearsDenGames.Models.Battleship
+<h3>@BoardTitle</h3>
+@if (Board != null)
+{
+    <table class="BsBoard">
+        <tr>
+            <td class="BsBaseCell BsEmptyCell"/>
+
+            @for (var col = 0; col < Board.ColCount; col++)
+            {
+                <td class="BsHeaderCell BsBaseCell">
+                    @Board.ColLabel(col)
+                </td>
+            }
+        </tr>
+
+        @for (var row = 0; row < Board.RowCount; row++)
+        {
+            <tr>
+                <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
+                @for (var col = 0; col < Board.ColCount; col++)
+                {
+                    <td class="BsBaseCell @CellStyle(col, row)">
+                        &nbsp;
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public BattleshipGame? Game { get; set; }
+
+    [Parameter]
+    public BattleshipPlayer? BattleshipPlayer { get; set; }
+
+    [Parameter]
+    public BattleshipGameBoard Board { get; set; } = new();
+
+    [Parameter]
+    public GameState GameState { get; set; }
+    
+    [Parameter]
+    public bool IsOpponent { get; set; }
+
+    [Parameter]
+    public string? BoardTitle { get; set; }
+
+    private string? CellStyle(int col, int row)
+    {
+        return BattleshipPlayer == null ? " BsWaterCell " : BattleshipPlayer?.Ships.GetBoardCellStyle(col, row, IsOpponent);
+    }
+
+    private string ShipEndStyle(int col)
+    {
+        return (col % 5) switch
+        {
+            0 => "BsShipEnd-N",
+            1 => "BsShipEnd-E",
+            2 => "BsShipEnd-S",
+            3 => "BsShipEnd-W",
+            _ => "BsMidShip"
+            };
+    }
+
+}

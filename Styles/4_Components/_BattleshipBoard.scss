@@ -1,0 +1,31 @@
+﻿
+.BsBoard-Main {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 4em 1fr;
+    grid-template-columns: auto 1fr auto;
+}
+
+.BsBoard-Title {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.BsBoard-Controls {
+    margin-top: 5em;
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid 3px red;
+}
+
+.BsBoard-Status {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.BsBoard-Board {
+    grid-column: 1/span 3;
+    grid-row: 2;
+}

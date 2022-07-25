@@ -1,0 +1,60 @@
+@using BearsDenGames.Models.Battleship
+<h3>Game List</h3>
+<hr/> 
+@foreach (var game in BearsDenGameServer.AvailableGames())
+{
+    <div class="MainGameList-Grid">
+        <div class="MainGameList-GameType">
+            @game.GameType
+        </div>
+        <div class="MainGameList-GameName">
+            @game.GameName
+        </div>
+        <div class="MainGameList-Button">
+            <MatButton class="GlassButton" OnClick="@(() => Join(game))" Label="Join"></MatButton>
+        </div>
+    </div>
+    <hr/> 
+}
+
+@inject BearsDenGameServer BearsDenGameServer
+@inject NavigationManager NavManager
+
+@code {
+
+    [Parameter]
+    public Player? Player { get; set; }
+
+    protected override void OnInitialized()
+    {
+        BearsDenGameServer.BattleshipServer.BsGameListUpdated += Refresh;
+    }
+
+    private async void Refresh()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void Join(CurrentGame selectedGame)
+    {
+        var game = BearsDenGameServer.BattleshipServer.GetGame(selectedGame.GameName);
+
+        if (game == null)
+        {
+            StateHasChanged();
+            return;
+        }
+
+        if (Player == null) return;
+        BattleshipPlayer bsPlayer = new(Player);
+        Player.CurrentGame = new(game.GameName, GameType.Battleship);
+        game.AddPlayer(bsPlayer);
+        NavManager.NavigateTo("Battleship");
+    }
+
+    public void Dispose()
+    {
+        BearsDenGameServer.BattleshipServer.BsGameListUpdated -= Refresh;
+    }
+
+}

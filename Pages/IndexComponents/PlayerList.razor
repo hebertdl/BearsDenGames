@@ -1,0 +1,40 @@
+<h3>Player List</h3>
+<hr/> 
+    @foreach (var player in BearsDenGameServer?.PlayerServer.GetPlayers()!)
+    { 
+        <div class="MainList-Grid">
+            <div class="MainList-Name">
+                @player?.PlayerName
+            </div>
+            <div class="MainList-GameType">
+                @player?.CurrentGame?.GameType
+            </div>
+            <div class="MainList-GameName">
+                @player?.CurrentGame?.GameName
+            </div>
+        </div>
+        <hr/> 
+    }
+@inject BearsDenGameServer BearsDenGameServer
+
+@code {
+
+    private IEnumerable<Player>? Players { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Players = BearsDenGameServer.PlayerServer.GetPlayers();
+        BearsDenGameServer.PlayerServer.PlayerListUpdated += Refresh;
+    }
+
+    private async void Refresh()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        BearsDenGameServer.PlayerServer.PlayerListUpdated -= Refresh;
+    }
+
+}

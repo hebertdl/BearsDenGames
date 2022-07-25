@@ -1,0 +1,129 @@
+@using BearsDenGames.Models.Battleship
+@if (Board != null)
+{
+    <div class="BsBoard-Main">
+        <div class="BsBoard-Title">
+            <h3>@BoardTitle</h3>
+        </div>
+        <div class="BsBoard-Status">
+            @if (IsActive && GameState == GameState.Ready)
+            {
+                <MatFAB Label="Your Turn" />
+            }
+        </div>
+        <div class="BsBoard-Board">
+            <table class="BsBoard">
+                <tr>
+                    <td class="BsBaseCell BsEmptyCell" />
+                    @for (var col = 0; col < Board.ColCount; col++)
+                    {
+                        <td class="BsHeaderCell BsBaseCell">
+                            @Board.ColLabel(col)
+                        </td>
+                    }
+                </tr>
+
+                @for (var row = 0; row < Board.RowCount; row++)
+                {
+                    <tr>
+                        <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
+                        @for (var col = 0; col < Board.ColCount; col++)
+                        {
+                            var boardCell = GetCell(col, row);
+                            <td class="BsBaseCell @boardCell?.ShipCellStyle(IsOpponent)" onclick="@(() => { if (boardCell != null) {OnCellClick(boardCell); } })">
+                                <div class="BsCellContainer">
+                                    <div class=" @boardCell?.CellStyle()"></div>
+                                </div>&nbsp;
+
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public BattleshipGame? Game { get; set; }
+
+    [Parameter]
+    public BattleshipPlayer? BattleshipPlayer { get; set; }
+
+    [Parameter]
+    public BattleshipGameBoard? Board { get; set; } = new();
+
+    [Parameter]
+    public bool IsOpponent { get; set; }
+
+    [Parameter]
+    public string? BoardTitle { get; set; }
+
+    [Parameter]
+    public GameState GameState { get; set; }
+
+    [Parameter]
+    public EventCallback<Player> GameOver { get; set; }
+    
+    private bool IsActive
+    {
+        get
+        {
+            var playerTurn = Game?.CurrentTurn;
+            if (IsOpponent) return false;
+            return playerTurn?.Player.PlayerName == BattleshipPlayer?.Player.PlayerName;
+        }
+    }
+    
+    private void checkGameStatus()
+    {
+        if (BattleshipPlayer?.Ships.RemainingHits == 0)
+        {
+            
+        }
+    }
+
+    private void OnCellClick(BoardCell boardCell)
+    {
+        if (!IsOpponent || GameState != GameState.Ready) return;
+        var playerTurn = Game?.CurrentTurn;
+        if (playerTurn == BattleshipPlayer) return;
+
+        if (!boardCell.Active) return;
+        boardCell.Active = false;
+        Game?.EndTurn();
+        checkGameStatus();
+        StateHasChanged();
+        
+    }
+
+    private BoardCell? GetCell(int col, int row)
+    {
+        var bc = Board?.GetCell(col, row);
+        return bc;
+    }
+
+    private string ShipEndStyle(int col)
+    {
+        return (col % 5) switch
+        {
+            0 => "BsShipEnd-N",
+            1 => "BsShipEnd-E",
+            2 => "BsShipEnd-S",
+            3 => "BsShipEnd-W",
+            _ => "BsMidShip"
+        };
+    }
+
+    public async void Refresh()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+    }
+
+}

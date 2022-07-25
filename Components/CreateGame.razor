@@ -1,0 +1,60 @@
+@using BearsDenGames.Models.Battleship
+<ModalScreen>
+    <Header>
+        <h3>Create Game</h3>
+    </Header>
+    <Body>
+    <MatTextField Style="width:100%" class="FullWidthInput" @bind-Value="@GameName" Label="Game Name"></MatTextField>
+    </Body>
+    <Footer>
+        <MatButton class="GlassButton" Disabled="@Disabled" OnClick="@OnCreateGame" Label="Create"></MatButton>
+        <MatButton class="CancelGlassButton" OnClick="@(() => Cancelled.InvokeAsync())" Label="Cancel"></MatButton>
+    </Footer>
+</ModalScreen>
+
+@inject BearsDenGameServer BearsDenGameServer
+@inject NavigationManager NavManager
+
+@code {
+
+    [Parameter]
+    public EventCallback Cancelled { get; set; }
+
+    [Parameter]
+    public Player? Player { get; set; }
+
+    private string _gameName = "";
+
+    private string GameName
+    {
+        get => _gameName;
+        set
+        {
+            _gameName = value;
+            Validate();
+        }
+    }
+
+    private bool Disabled { get; set; } = true;
+
+    private void Validate()
+    {
+        if (GameName == "") Disabled = true;
+        if (BearsDenGameServer.BattleshipServer.GetGame(GameName) != null) Disabled = true;
+        Disabled = false;
+    }
+
+    private void OnCreateGame()
+    {
+        if (Player != null)
+        {
+            BattleshipPlayer bsPlayer = new(Player);
+            Player.CurrentGame = new(GameName, GameType.Battleship);
+            var game = new BattleshipGame(GameName, bsPlayer, BearsDenGameServer.DefaultIdleTimout);
+           
+            BearsDenGameServer.BattleshipServer.AddGame(game);
+            NavManager.NavigateTo("Battleship?Game=" + GameName);
+        }
+        else Cancelled.InvokeAsync();
+    }
+    } 

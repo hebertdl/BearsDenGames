@@ -1,0 +1,118 @@
+﻿.BsBoard {
+  background-color: set-watercolor();
+  padding: 1em;
+}
+
+.BsBaseCell {
+  width: 3em;
+  height: 3em;
+  border: solid 1px set-primarycolor();
+  color: set-offsetcolor();
+  margin: auto;
+  text-align: center;
+}
+
+.BsHeaderCell {
+  background-color: set-watercolor();
+  font-weight: bold;
+}
+
+.BsWaterCell {
+  background-color: set-watercolor();
+}
+
+.BsShipCell {
+  text-align: center;
+  background-color: set-primarycolor();
+}
+
+.BsMidShipCell {
+  text-align: center;
+  background-color: set-primarycolor();
+}
+
+
+.BsShipBow-North {
+  background-color: set-primarycolor() !important;
+  border-radius: 3em 3em 0em 0em;
+}
+
+
+.BsShipBow-East {
+  background-color: set-primarycolor() !important;
+  border-radius: 0em 3em 3em 0em;
+}
+
+.BsShipBow-South {
+  background-color: set-primarycolor() !important;
+  border-radius: 0em 0em 3em 3em;
+}
+
+.BsShipBow-West {
+  background-color: set-primarycolor() !important;
+  border-radius: 3em 0em 0em 3em;
+}
+
+
+.BsShipStern-North {
+  background-color: set-primarycolor() !important;
+  border-radius: 0em 0em 1em 1em;
+}
+
+.BsShipStern-East {
+  background-color: set-primarycolor() !important;
+  border-radius: 1em 0em 0em 1em;
+}
+
+.BsShipStern-South {
+  background-color: set-primarycolor() !important;
+  border-radius: 1em 1em 0em 0em;
+}
+
+.BsShipStern-West {
+  background-color: set-primarycolor() !important;
+  border-radius: 0em 1em 1em 0em;
+}
+
+
+.BsEmptyCell {
+  background-color: set-watercolor();
+  text-align: center;
+}
+
+.BsCellContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.BsCellCircle {
+  border: solid 1px set-offsetcolor();
+  border-radius: 3em;
+  height: 1.5em;
+  width: 1.5em;
+  position: absolute;
+  top: 1.5em;
+  left: .75em;
+}
+
+.BsCellCircle-Shipx {
+  border: solid 1px white;
+  border-radius: 3em;
+  height: 1.5em;
+  width: 1.5em;
+  margin: auto;
+}
+
+.BsCellHit {
+  background-color: set-hitcolor();
+}
+
+.BsCellMiss {
+  background-color: set-misscolor();
+}
+
+
+.BsShipCell {
+  background-color: set-primarycolor();
+}

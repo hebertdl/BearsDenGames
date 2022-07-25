@@ -1,0 +1,363 @@
+﻿.FullWidthInput {
+  width: 100% !important;
+}
+
+.basebutton {
+  padding: 0.5em 1em 0.5em 1em;
+}
+
+.GlassButton, .basebutton {
+  /* background styles */
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 1em 0.25em 1em;
+  background-color: #002F6C;
+  /*for compatibility with older browsers*/
+  background-image: linear-gradient(#4287f5, #002F6C);
+  /* text styles */
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  color: #ffffff !important;
+  font-weight: 100;
+  border-radius: 10%;
+  box-shadow: 0px 1px 4px -2px #333;
+  text-shadow: 0px -1px #333;
+}
+
+.GlassButton after, .basebutton after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(100% - 4px);
+  /*  height: 50%;*/
+  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+}
+
+.Glassbutton:hover, .basebutton:hover {
+  background: linear-gradient(#5a91a8, #151929);
+}
+
+.BsPageMain {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: auto auto auto 1fr;
+}
+
+.BsPage-GameTitle {
+  grid-column: 1/span 3;
+  grid-row: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.BsPage-GameControls {
+  margin-top: 4em;
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-right: 2em;
+  margin-left: 2em;
+  height: 100%;
+}
+
+.BsPage-PlayerBoard {
+  grid-column: 1;
+  grid-row: 2;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.BsPage-OpponentBoard {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.BsPage-ControlGrid {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 5em 5em 1fr 5em;
+  grid-template-columns: auto;
+}
+
+.BsPage-Randomize {
+  grid-column: 1;
+  grid-row: 1;
+}
+.BsPage-Randomize .GlassButton {
+  width: 100%;
+}
+
+.BsPage-Ready {
+  grid-column: 1;
+  grid-row: 2;
+}
+.BsPage-Ready .GlassButton {
+  width: 100%;
+}
+
+.BsPage-Leave {
+  grid-column: 1;
+  grid-row: 4;
+  margin-top: -1.5em;
+}
+.BsPage-Leave .GlassButton {
+  width: 100%;
+}
+
+.MainPage-Grid {
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: 30% 30%;
+}
+
+.MainPage-Name {
+  grid-column: 1/span 2;
+  grid-row: 1;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.MainPage-Buttons {
+  grid-column: 1/span 2;
+  grid-row: 2;
+  margin-bottom: 1em;
+}
+
+.MainPage-GameList {
+  grid-column: 1;
+  grid-row: 3;
+  border: solid 2px #002F6C;
+  margin-right: 2em;
+}
+
+.MainPage-PlayerList {
+  grid-column: 2;
+  grid-row: 3;
+  border: solid 2px #002F6C;
+}
+
+.MainPage-ButtonGrid {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+}
+
+.MainPage-ButtonCreate {
+  grid-column: 1;
+  grid-row: 1;
+  margin-right: 2em;
+}
+
+.MainPage-ButtonLeave {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  justify-content: end;
+}
+
+.MainList-Grid {
+  width: 30%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto auto;
+}
+
+.MainList-Name {
+  grid-column: 1;
+  grid-row: 1;
+  margin-right: 2em;
+}
+
+.MainList-GameType {
+  grid-column: 2;
+  grid-row: 1;
+  margin-right: 2em;
+}
+
+.MainList-GameName {
+  grid-column: 3;
+  grid-row: 1;
+  margin-right: 2em;
+}
+
+.MainList-Button {
+  grid-column: 4;
+  grid-row: 1;
+  margin-right: 2em;
+}
+
+.MainGameList-Grid {
+  display: grid;
+  width: 27em;
+  grid-template-rows: auto;
+  grid-template-columns: 5em auto auto;
+}
+
+.MainGameList-Button {
+  grid-column: 1;
+  grid-row: 1;
+  padding-right: 2em;
+}
+
+.MainGameList-GameType {
+  grid-column: 2;
+  grid-row: 1;
+  padding-right: 2em;
+}
+
+.MainGameList-GameName {
+  grid-column: 3;
+  grid-row: 1;
+  padding-right: 2em;
+}
+
+.BsBoard-Main {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 4em 1fr;
+  grid-template-columns: auto 1fr auto;
+}
+
+.BsBoard-Title {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.BsBoard-Controls {
+  margin-top: 5em;
+  grid-column: 2;
+  grid-row: 1;
+  margin-left: auto;
+  margin-right: auto;
+  border: solid 3px red;
+}
+
+.BsBoard-Status {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.BsBoard-Board {
+  grid-column: 1/span 3;
+  grid-row: 2;
+}
+
+.BsBoard {
+  background-color: #4287f5;
+  padding: 1em;
+}
+
+.BsBaseCell {
+  width: 3em;
+  height: 3em;
+  border: solid 1px #002F6C;
+  color: #ffffff;
+  margin: auto;
+  text-align: center;
+}
+
+.BsHeaderCell {
+  background-color: #4287f5;
+  font-weight: bold;
+}
+
+.BsWaterCell {
+  background-color: #4287f5;
+}
+
+.BsShipCell {
+  text-align: center;
+  background-color: #002F6C;
+}
+
+.BsMidShipCell {
+  text-align: center;
+  background-color: #002F6C;
+}
+
+.BsShipBow-North {
+  background-color: #002F6C !important;
+  border-radius: 3em 3em 0em 0em;
+}
+
+.BsShipBow-East {
+  background-color: #002F6C !important;
+  border-radius: 0em 3em 3em 0em;
+}
+
+.BsShipBow-South {
+  background-color: #002F6C !important;
+  border-radius: 0em 0em 3em 3em;
+}
+
+.BsShipBow-West {
+  background-color: #002F6C !important;
+  border-radius: 3em 0em 0em 3em;
+}
+
+.BsShipStern-North {
+  background-color: #002F6C !important;
+  border-radius: 0em 0em 1em 1em;
+}
+
+.BsShipStern-East {
+  background-color: #002F6C !important;
+  border-radius: 1em 0em 0em 1em;
+}
+
+.BsShipStern-South {
+  background-color: #002F6C !important;
+  border-radius: 1em 1em 0em 0em;
+}
+
+.BsShipStern-West {
+  background-color: #002F6C !important;
+  border-radius: 0em 1em 1em 0em;
+}
+
+.BsEmptyCell {
+  background-color: #4287f5;
+  text-align: center;
+}
+
+.BsCellContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.BsCellCircle {
+  border: solid 1px #ffffff;
+  border-radius: 3em;
+  height: 1.5em;
+  width: 1.5em;
+  position: absolute;
+  top: 1.5em;
+  left: 0.75em;
+}
+
+.BsCellCircle-Shipx {
+  border: solid 1px white;
+  border-radius: 3em;
+  height: 1.5em;
+  width: 1.5em;
+  margin: auto;
+}
+
+.BsCellHit {
+  background-color: #db1d04;
+}
+
+.BsCellMiss {
+  background-color: #aba6a6;
+}
+
+.BsShipCell {
+  background-color: #002F6C;
+}

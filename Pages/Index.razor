@@ -1,0 +1,81 @@
+﻿@page "/"
+@using BearsDenGames.Pages.IndexComponents
+
+@if (Player == null)
+{
+    <SignIn PlayerCreated="@OnPlayerCreated"/>
+}
+else
+{
+    <div class="MainPage-Grid">
+        <div class="MainPage-Name">
+            <h3>@Player?.PlayerName welcome to Bears Den Games</h3>
+            <PageTitle>Bears Den Games</PageTitle>
+        </div>
+        <div class="MainPage-Buttons">
+            <div class="MainPage-ButtonGrid">
+                <div class="MainPage-ButtonCreate">
+                    <MatButton class="GlassButton" OnClick="@SetCreateGame" Label="Create Game"/>
+                </div>
+                <div class="MainPage-ButtonLeave">
+                    <MatButton class="GlassButton" OnClick="@SignOut" Label="Sign Out"/>
+                </div>
+            </div>
+
+        </div>
+        <div class="MainPage-GameList">
+            <GameList Player="@Player"/>
+        </div>
+        <div class="MainPage-PlayerList">
+            <PlayerList/>
+        </div>
+    </div>
+    @if (ShowCreateGame)
+    {
+        <CreateGame Player="@Player" Cancelled="@OnCancelled"/>
+    }
+}
+
+@inject BearsDenGameServer BearsDenGameServer
+@inject ProtectedSessionStorage ProtectedSessionStorage
+
+@code
+{
+
+    private Player? Player { get; set; }
+    private string? PlayerName { get; set; }
+    private bool ShowCreateGame { get; set; }
+
+    private void SetCreateGame()
+    {
+        ShowCreateGame = true;
+    }
+
+    private async Task OnPlayerCreated(Player player)
+    {
+        if (player.PlayerName != null) await ProtectedSessionStorage.SetAsync("PlayerName", player.PlayerName);
+        Player = player;
+    }
+
+    private void OnCancelled()
+    {
+        ShowCreateGame = false;
+    }
+
+    private void SignOut()
+    {
+        BearsDenGameServer.PlayerServer.RemovePlayer(Player);
+        Player = null;
+        BearsDenGameServer.DoPurge();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedSessionStorage.GetAsync<string>("PlayerName");
+        PlayerName = result.Success ? result.Value : "";
+        if (string.IsNullOrEmpty(PlayerName)) return;
+        Player = BearsDenGameServer.PlayerServer.GetPlayer(PlayerName);
+    }
+
+}

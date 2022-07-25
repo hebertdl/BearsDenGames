@@ -1,0 +1,112 @@
+﻿
+.MainPage-Grid {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 30% 30%;
+}
+
+.MainPage-Name {
+    grid-column: 1 /span 2;
+    grid-row: 1;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.MainPage-Buttons {
+    grid-column: 1 /span 2;
+    grid-row: 2;
+    margin-bottom: 1em;
+}
+
+.MainPage-GameList {
+    grid-column: 1;
+    grid-row: 3;
+    border: solid 2px set-primarycolor();
+    margin-right: 2em;
+}
+
+.MainPage-PlayerList {
+    grid-column: 2;
+    grid-row: 3;
+    border: solid 2px set-primarycolor();
+}
+
+
+.MainPage-ButtonGrid {
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+}
+
+.MainPage-ButtonCreate {
+    grid-column: 1;
+    grid-row: 1;
+    margin-right: 2em;
+}
+
+.MainPage-ButtonLeave {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    justify-content: end;
+}
+
+
+
+.MainList-Grid {
+    width: 30%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto auto auto auto;
+}
+
+.MainList-Name {
+    grid-column: 1;
+    grid-row: 1;
+    margin-right: 2em;
+}
+
+.MainList-GameType {
+    grid-column: 2;
+    grid-row: 1;
+    margin-right: 2em;
+}
+
+.MainList-GameName {
+    grid-column: 3;
+    grid-row: 1;
+    margin-right: 2em;
+}
+
+.MainList-Button {
+    grid-column: 4;
+    grid-row: 1;
+    margin-right: 2em;
+}
+
+
+.MainGameList-Grid {
+    display: grid;
+    width: 27em;
+    grid-template-rows: auto;
+    grid-template-columns: 5em auto auto;
+}
+
+.MainGameList-Button {
+    grid-column: 1;
+    grid-row: 1;
+    padding-right: 2em;
+}
+
+.MainGameList-GameType {
+    grid-column: 2;
+    grid-row: 1;
+    padding-right: 2em;
+}
+
+.MainGameList-GameName {
+    grid-column: 3;
+    grid-row: 1;
+    padding-right: 2em;
+}

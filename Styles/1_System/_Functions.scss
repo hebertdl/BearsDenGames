@@ -1,0 +1,22 @@
+﻿body {
+}
+
+@function set-primarycolor() {
+  @return #002F6C
+}
+
+@function set-offsetcolor() {
+  @return #ffffff
+}
+
+@function set-hitcolor() {
+  @return #db1d04
+}
+
+@function set-misscolor() {
+  @return #aba6a6
+}
+
+@function set-watercolor() {
+  @return #4287f5
+}

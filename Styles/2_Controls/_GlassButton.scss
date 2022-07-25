@@ -1,0 +1,37 @@
+﻿
+.basebutton {
+  padding: .5em 1em .5em 1em;
+}
+
+.GlassButton, .basebutton {
+  /* background styles */
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 1em 0.25em 1em;
+  background-color: set-primarycolor();
+  /*for compatibility with older browsers*/
+  background-image: linear-gradient(set-watercolor(), set-primarycolor());
+  /* text styles */
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  color: set-offsetcolor() !important;
+  font-weight: 100;
+  border-radius: 10%;
+  box-shadow: 0px 1px 4px -2px #333;
+  text-shadow: 0px -1px #333;
+}
+
+.GlassButton after, .basebutton after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(100% - 4px);
+  /*  height: 50%;*/
+  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+}
+
+.Glassbutton:hover, .basebutton:hover {
+  background: linear-gradient(#5a91a8, #151929);
+}

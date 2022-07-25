@@ -1,0 +1,23 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>Battleship</PageTitle>
+
+<div class="page">
+
+    <main>
+        <article class="content px-4">
+            <MatThemeProvider Theme="@_theme1">
+                @Body
+            </MatThemeProvider>
+        </article>
+    </main>
+</div>
+
+@code
+{
+    readonly MatTheme _theme1 = new()
+    {
+        Primary = "#002F6C",
+        Secondary = "#d50000"
+    };
+}

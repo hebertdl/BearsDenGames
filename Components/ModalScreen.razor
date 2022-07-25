@@ -1,0 +1,36 @@
+<div class="@ClassName">
+    <MatPaper Elevation="10">
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @Header
+                    </div>
+                    <div class="modal-body">
+                        @Body
+                    </div>
+                    <div class="modal-footer">
+                        @Footer
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </MatPaper>
+</div>
+
+@code {
+
+    [Parameter]
+    public string ClassName { get; set; } = "";
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? Body { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
+
+}
