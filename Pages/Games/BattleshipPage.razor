@@ -19,7 +19,7 @@
             }
             @if (GameState == GameState.Complete)
             {
-                @if (BattleshipPlayer?.Ships.RemainingHits == 0)
+                @if (Opponent?.Ships.RemainingHits == 0)
                 {
                     <MatFAB Label="You Win!!!" Style="background-color: lawngreen; color: black; font-weight: bold;"/>
                 }
