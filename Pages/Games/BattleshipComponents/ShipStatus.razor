@@ -1,5 +1,32 @@
-<h3>ShipStatus</h3>
+@using BearsDenGames.Models.Battleship
+
+@foreach (var cell in Ship?.ShipCells!)
+    {
+        <td class="BsShipStatus-Cell @ShipCellStyle(cell)">
+            <div class="BsCellContainer">
+                <div class=" @CellStyle(cell)"></div>
+            </div>&nbsp;
+        </td>
+    }
+
 
 @code {
-    
+
+    [Parameter]
+    public Ship? Ship { get; set; }
+
+    private string? ShipCellStyle(BoardCell cell)
+    {
+        var str =  cell?.ShipCellStyle(false, GameState.Ready)
+            .Replace("North", "West")
+            .Replace("South", "West")
+            .Replace("East", "West");
+        Console.WriteLine(str);
+        return str;
+    }
+    private string? CellStyle(BoardCell cell)
+    {
+        return cell?.CellStyle().Replace("BsCellCircle", "BsCellStatusCircle");
+
+    }
 }

@@ -1,6 +1,6 @@
 ﻿// system values
 @import "./1_System/Functions";
-
+@import "./1_System/App";
 // controls
 @import "./2_Controls/FormField";
 @import "./2_Controls/GlassButton";
@@ -12,6 +12,7 @@
 // components
 @import "./4_Components/BattleshipBoard";
 @import "./4_Components/BattleshipCell";
+@import "./4_Components/_BattleshipStatus.scss";
 
 // Pages
 

@@ -17,9 +17,9 @@ public class BoardCell
     public bool Active { get; set; } = true;
     private ShipCell? ShipCell { get; }
 
-    public string ShipCellStyle(bool isOpponent)
+    public string ShipCellStyle(bool isOpponent, GameState gameState)
     {
-        if (ShipCell == null || isOpponent) return "";
+        if (ShipCell == null || (isOpponent && gameState != GameState.Complete)) return "";
         var sbRtn = new StringBuilder();
         if (ShipCell.ShipLoc == 0)
             sbRtn.Append(" BsShipBow-" + ShipCell.Direction);

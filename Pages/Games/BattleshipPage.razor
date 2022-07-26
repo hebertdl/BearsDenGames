@@ -11,27 +11,72 @@
             @if (GameState == GameState.Setup)
             {
                 <div class="BsPage-Randomize">
-                    <MatButton class="GlassButton" OnClick="@Randomize" Label="Randomize"/>
+                    <MatButton class="GlassButton" OnClick="@Randomize" Label="Randomize" />
                 </div>
                 <div class="BsPage-Ready">
-                    <MatButton class="GlassButton" OnClick="@SetReady" Label="Ready"/>
+                    <MatButton class="GlassButton" OnClick="@SetReady" Label="Ready" />
                 </div>
             }
+             @if (GameState == GameState.Ready)
+             {
+                
+                 <table>
+                      <tr>
+                          <td style="column-span: 4"> @BattleshipPlayer?.Player.PlayerName</td>
+                          </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Carrier"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Battleship"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Destroyer"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Submarine"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.PatrolBoat"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <td style="column-span: 4">@Opponent?.Player.PlayerName</td>
+                     </tr>
+
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Carrier"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Battleship"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Destroyer"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Submarine"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.PatrolBoat"></ShipStatus>
+                     </tr>
+
+                 </table>
+                 
+             }
+
             @if (GameState == GameState.Complete)
             {
                 @if (Opponent?.Ships.RemainingHits == 0)
                 {
-                    <MatFAB Label="You Win!!!" Style="background-color: lawngreen; color: black; font-weight: bold;"/>
+                    <MatFAB Label="You Win!!!" Style="background-color: lawngreen; color: black; font-weight: bold;" />
                 }
                 else
                 {
-                    <MatFAB Label="Game Over" Style="background-color: gray; color: white"/>
+                    <MatFAB Label="Game Over" Style="background-color: gray; color: white" />
                 }
-                <MatButton class="GlassButton" OnClick="@NewGame" Label="New Game"/>
-               
+                <MatButton class="GlassButton" OnClick="@NewGame" Label="New Game" />
             }
             <div class="BsPage-Leave">
-                <MatButton class="GlassButton" OnClick="@LeaveGame" Label="Leave"/>
+                <MatButton class="GlassButton" OnClick="@LeaveGame" Label="Leave" />
             </div>
         </div>
     </div>
@@ -40,18 +85,18 @@
         @if (GameState == GameState.Setup)
         {
             <BattleshipBoardSetup Game="@Game"
-                                  GameState="@GameState"
-                                  BattleshipPlayer="@BattleshipPlayer"
-                                  Board="@BattleshipPlayer?.BattleshipGameBoard"
-                                  BoardTitle="@BattleshipPlayer?.Player.PlayerName"/>
+                              GameState="@GameState"
+                              BattleshipPlayer="@BattleshipPlayer"
+                              Board="@BattleshipPlayer?.BattleshipGameBoard"
+                              BoardTitle="@BattleshipPlayer?.Player.PlayerName" />
         }
         else
         {
             <BattleshipBoard @ref="_playerBoardRef" Game="@Game"
-                             GameState="@GameState"
-                             BattleshipPlayer="@BattleshipPlayer"
-                             Board="@BattleshipPlayer?.BattleshipGameBoard"
-                             BoardTitle="@BattleshipPlayer?.Player.PlayerName"/>
+                         GameState="@GameState"
+                         BattleshipPlayer="@BattleshipPlayer"
+                         Board="@BattleshipPlayer?.BattleshipGameBoard"
+                         BoardTitle="@BattleshipPlayer?.Player.PlayerName" />
         }
     </div>
     <div class="BsPage-OpponentBoard">
@@ -60,7 +105,7 @@
                          BattleshipPlayer="@Opponent"
                          Board="@Opponent?.BattleshipGameBoard"
                          IsOpponent="true"
-                         BoardTitle="@Opponent?.Player.PlayerName"/>
+                         BoardTitle="@Opponent?.Player.PlayerName" />
     </div>
 </div>
 
@@ -86,7 +131,7 @@
         BattleshipPlayer?.ReadyBoard();
         GameState = GameState.Ready;
     }
-    
+
     private void NewGame()
     {
         Game?.NewGame();

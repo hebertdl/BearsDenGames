@@ -65,12 +65,35 @@
 }
 
 
-.BsPage-Leave {
+.BsPage-PlayerShipStatus {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+
+.BsPage-OpponentShipStatus {
     grid-column: 1;
     grid-row: 4;
+}
+
+
+.BsPage-Leave {
+    grid-column: 1;
+    grid-row: 6;
     margin-top: -1.5em;
 
     .GlassButton {
         width: 100%;
+    }
+}
+
+
+@media(max-width: 1181px) {
+
+    .BsPageMain {
+        width: 100%;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        grid-template-columns: auto 1fr auto;
     }
 }

@@ -51,7 +51,7 @@
 
     private string? CellStyle(int col, int row)
     {
-        return BattleshipPlayer == null ? " BsWaterCell " : BattleshipPlayer?.Ships.GetBoardCellStyle(col, row, IsOpponent);
+        return BattleshipPlayer == null ? " BsWaterCell " : BattleshipPlayer?.Ships.GetBoardCellStyle(col, row, IsOpponent, GameState.Setup);
     }
 
     private string ShipEndStyle(int col)

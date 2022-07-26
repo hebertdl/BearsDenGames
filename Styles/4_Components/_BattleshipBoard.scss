@@ -29,3 +29,15 @@
     grid-column: 1/span 3;
     grid-row: 2;
 }
+
+
+@media(max-width: 1181px) {
+    .BsBoard-Status {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+@media(max-width: 650px) {
+}

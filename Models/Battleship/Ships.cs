@@ -2,11 +2,11 @@
 
 public class Ships
 {
-    private readonly Ship _battleship = new(4);
-    private readonly Ship _carrier = new(5);
-    private readonly Ship _destroyer = new(3);
-    private readonly Ship _patrolBoat = new(2);
-    private readonly Ship _submarine = new(3);
+    public  readonly Ship Battleship = new(4);
+    public readonly Ship Carrier = new(5);
+    public readonly Ship Destroyer = new(3);
+    public readonly Ship PatrolBoat = new(2);
+    public readonly Ship Submarine = new(3);
 
     public Ships()
     {
@@ -15,10 +15,10 @@ public class Ships
 
     public Dictionary<Tuple<int, int>, BoardCell> FleetCells { get; private set; } = new();
 
-    public string GetBoardCellStyle(int col, int row, bool isOpponent)
+    public string GetBoardCellStyle(int col, int row, bool isOpponent, GameState gameState)
     {
         return FleetCells.ContainsKey(new Tuple<int, int>(col, row))
-            ? FleetCells[new Tuple<int, int>(col, row)].ShipCellStyle(isOpponent)
+            ? FleetCells[new Tuple<int, int>(col, row)].ShipCellStyle(isOpponent, gameState)
             : " BsWaterCell ";
     }
 
@@ -27,11 +27,11 @@ public class Ships
     public void Randomize()
     {
         FleetCells = new();
-        SetPosition(_carrier);
-        SetPosition(_battleship);
-        SetPosition(_destroyer);
-        SetPosition(_submarine);
-        SetPosition(_patrolBoat);
+        SetPosition(Carrier);
+        SetPosition(Battleship);
+        SetPosition(Destroyer);
+        SetPosition(Submarine);
+        SetPosition(PatrolBoat);
     }
 
     private void SetPosition(Ship ship)

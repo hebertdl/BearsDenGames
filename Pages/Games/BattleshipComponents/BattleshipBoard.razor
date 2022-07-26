@@ -24,13 +24,13 @@
                 </tr>
 
                 @for (var row = 0; row < Board.RowCount; row++)
-                {
-                    <tr>
-                        <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
-                        @for (var col = 0; col < Board.ColCount; col++)
-                        {
-                            var boardCell = GetCell(col, row);
-                            <td class="BsBaseCell @boardCell?.ShipCellStyle(IsOpponent)" onclick="@(() => { if (boardCell != null) {OnCellClick(boardCell); } })">
+    {
+        <tr>
+            <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
+            @for (var col = 0; col < Board.ColCount; col++)
+            {
+                var boardCell = GetCell(col, row);
+                <td class="BsBaseCell @boardCell?.ShipCellStyle(IsOpponent, GameState)" onclick="@(() => { if (boardCell != null) {OnCellClick(boardCell); } })">
                                 <div class="BsCellContainer">
                                     <div class=" @boardCell?.CellStyle()"></div>
                                 </div>&nbsp;
