@@ -16,7 +16,13 @@ public class BattleshipGame : Game<BattleshipPlayer>
 
     public bool GameIsInvalid => IdleTime() > IdleTimeout || IsEmpty;
 
-    public BattleshipPlayer CurrentTurn => PlayerTurns.Peek();
+    public BattleshipPlayer? CurrentTurn()
+    {
+        if (PlayerTurns.Count > 0)
+            return PlayerTurns.Peek();
+        else return null;
+
+    }
 
     public override void DoPurge()
     {
@@ -68,7 +74,7 @@ public class BattleshipGame : Game<BattleshipPlayer>
         UpdateLastActivity();
         UpdateGameState?.Invoke(PlayerTurns.Peek().Ships.RemainingHits == 0 ? GameState.Complete : GameState.Ready);
     }
-    
+
     public override int PlayerCount()
     {
         return PlayerTurns.Count;

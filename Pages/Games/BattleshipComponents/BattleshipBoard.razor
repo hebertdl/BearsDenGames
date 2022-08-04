@@ -24,13 +24,13 @@
                 </tr>
 
                 @for (var row = 0; row < Board.RowCount; row++)
-    {
-        <tr>
-            <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
-            @for (var col = 0; col < Board.ColCount; col++)
-            {
-                var boardCell = GetCell(col, row);
-                <td class="BsBaseCell @boardCell?.ShipCellStyle(IsOpponent, GameState)" onclick="@(() => { if (boardCell != null) {OnCellClick(boardCell); } })">
+                {
+                    <tr>
+                        <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
+                        @for (var col = 0; col < Board.ColCount; col++)
+                        {
+                            var boardCell = GetCell(col, row);
+                            <td class="BsBaseCell @boardCell?.ShipCellStyle(IsOpponent, GameState)" onclick="@(() => { if (boardCell != null) {OnCellClick(boardCell); } })">
                                 <div class="BsCellContainer">
                                     <div class=" @boardCell?.CellStyle()"></div>
                                 </div>&nbsp;
@@ -66,22 +66,24 @@
 
     [Parameter]
     public EventCallback<Player> GameOver { get; set; }
-    
+
     private bool IsActive
     {
         get
         {
-            var playerTurn = Game?.CurrentTurn;
+            var playerTurn = Game?.CurrentTurn();
+
             if (IsOpponent) return false;
             return playerTurn?.Player.PlayerName == BattleshipPlayer?.Player.PlayerName;
+
         }
     }
-    
+
     private void OnCellClick(BoardCell boardCell)
     {
         if (!IsOpponent || GameState != GameState.Ready) return;
-        var playerTurn = Game?.CurrentTurn;
-        if (playerTurn == BattleshipPlayer) return;
+        var playerTurn = Game?.CurrentTurn();
+        if (playerTurn == BattleshipPlayer || playerTurn == null) return;
 
         if (!boardCell.Active) return;
         boardCell.Active = false;
@@ -116,4 +118,4 @@
     {
     }
 
-}
+    }

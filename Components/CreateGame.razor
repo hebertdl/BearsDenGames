@@ -4,7 +4,14 @@
         <h3>Create Game</h3>
     </Header>
     <Body>
-    <MatTextField Style="width:100%" class="FullWidthInput" @bind-Value="@GameName" Label="Game Name"></MatTextField>
+        <MatTextField Style="width:100%" class="FullWidthInput"
+                      OnInput="@(ui => {onValueChange(ui.Value.ToString());})"
+                      OnKeyPress="onNameChange"
+                      @bind-Value="@GameName" Label="Game Name"></MatTextField>
+        @if (Disabled && GameName != "")
+        {
+            <p style="color:red">*This name is already in use!</p>
+        }
     </Body>
     <Footer>
         <MatButton class="GlassButton" Disabled="@Disabled" OnClick="@OnCreateGame" Label="Create"></MatButton>
@@ -37,11 +44,32 @@
 
     private bool Disabled { get; set; } = true;
 
+
+    private void onValueChange(string e)
+    {
+        GameName = e;
+        Console.WriteLine(Disabled);
+    }
+
+    private void onNameChange(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            if (!Disabled) OnCreateGame();
+        }
+    }
+
     private void Validate()
     {
-        if (GameName == "") Disabled = true;
-        if (BearsDenGameServer.BattleshipServer.GetGame(GameName) != null) Disabled = true;
-        Disabled = false;
+        Disabled = IsValid();
+        Console.WriteLine(Disabled);
+    }
+
+    private bool IsValid()
+    {
+        if (GameName == "") return true;
+        if (BearsDenGameServer.BattleshipServer.GetGame(GameName.Trim()) != null) return true;
+        return false;
     }
 
     private void OnCreateGame()
@@ -51,7 +79,7 @@
             BattleshipPlayer bsPlayer = new(Player);
             Player.CurrentGame = new(GameName, GameType.Battleship);
             var game = new BattleshipGame(GameName, bsPlayer, BearsDenGameServer.DefaultIdleTimout);
-           
+
             BearsDenGameServer.BattleshipServer.AddGame(game);
             NavManager.NavigateTo("Battleship?Game=" + GameName);
         }

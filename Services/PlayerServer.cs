@@ -13,12 +13,13 @@ public class PlayerServer
 
     public Player? GetPlayer(string? playerName)
     {
-        return Players?.Find(x => x.PlayerName == playerName);
+        return Players?.Find(x => x.PlayerName?.ToUpper() == playerName?.Trim().ToUpper());
     }
 
     internal void AddPlayer(Player? player)
     {
         if (player == null || string.IsNullOrEmpty(player.PlayerName)) return;
+        player.PlayerName.Trim();
         Players?.Add(player);
         PlayerListUpdated?.Invoke();
     }

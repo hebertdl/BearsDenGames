@@ -1,6 +1,9 @@
 @using BearsDenGames.Models.Battleship
 
-@foreach (var cell in Ship?.ShipCells!)
+@if (Ship?.ShipCells != null)
+{
+
+    @foreach (var cell in Ship?.ShipCells)
     {
         <td class="BsShipStatus-Cell @ShipCellStyle(cell)">
             <div class="BsCellContainer">
@@ -8,6 +11,8 @@
             </div>&nbsp;
         </td>
     }
+
+}
 
 
 @code {
@@ -17,7 +22,7 @@
 
     private string? ShipCellStyle(BoardCell cell)
     {
-        var str =  cell?.ShipCellStyle(false, GameState.Ready)
+        var str = cell?.ShipCellStyle(false, GameState.Ready)
             .Replace("North", "West")
             .Replace("South", "West")
             .Replace("East", "West");

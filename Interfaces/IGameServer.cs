@@ -1,4 +1,4 @@
-namespace BearsDenGames.Services;
+namespace BearsDenGames.Interfaces;
 
 public interface IGameServer<TGame>
 {
