@@ -22,7 +22,7 @@
                 
                  <table>
                       <tr>
-                          <td style="column-span: 4"> @BattleshipPlayer?.Player.PlayerName</td>
+                          <td style="column-span: 4"> @BattleshipPlayer?.PlayerName</td>
                           </tr>
                      <tr>
                          <ShipStatus Ship="@BattleshipPlayer?.Ships.Carrier"></ShipStatus>
@@ -40,7 +40,7 @@
                          <ShipStatus Ship="@BattleshipPlayer?.Ships.PatrolBoat"></ShipStatus>
                      </tr>
                      <tr>
-                         <td style="column-span: 4">@Opponent?.Player.PlayerName</td>
+                         <td style="column-span: 4">@Opponent?.PlayerName</td>
                      </tr>
 
                      <tr>
@@ -88,7 +88,7 @@
                               GameState="@GameState"
                               BattleshipPlayer="@BattleshipPlayer"
                               Board="@BattleshipPlayer?.BattleshipGameBoard"
-                              BoardTitle="@BattleshipPlayer?.Player.PlayerName" />
+                              BoardTitle="@BattleshipPlayer?.PlayerName" />
         }
         else
         {
@@ -96,7 +96,7 @@
                          GameState="@GameState"
                          BattleshipPlayer="@BattleshipPlayer"
                          Board="@BattleshipPlayer?.BattleshipGameBoard"
-                         BoardTitle="@BattleshipPlayer?.Player.PlayerName" />
+                         BoardTitle="@BattleshipPlayer?.PlayerName" />
         }
     </div>
     <div class="BsPage-OpponentBoard">
@@ -105,7 +105,7 @@
                          BattleshipPlayer="@Opponent"
                          Board="@Opponent?.BattleshipGameBoard"
                          IsOpponent="true"
-                         BoardTitle="@Opponent?.Player.PlayerName" />
+                         BoardTitle="@Opponent?.PlayerName" />
     </div>
 </div>
 
@@ -124,7 +124,7 @@
     private GameState GameState { get; set; } = GameState.Setup;
 
     [CascadingParameter(Name = "Player")]
-    private Player? Player { get; set; }
+    private IPlayer? Player { get; set; }
 
     private void SetReady()
     {
@@ -148,7 +148,7 @@
         if (BattleshipPlayer != null)
         {
             Game?.RemovePlayer(BattleshipPlayer);
-            BattleshipPlayer.Player.CurrentGame = null;
+            BattleshipPlayer.CurrentGame = null;
         }
         Dispose();
         ReturnToIndex();
@@ -161,7 +161,7 @@
 
     private async void PlayerRefresh()
     {
-        Opponent = Game?.Players.ToList().Find(x => x.Player.PlayerName != Player?.PlayerName);
+        Opponent = Game?.Players.ToList().Find(x => x.PlayerName != Player?.PlayerName);
         BattleshipPlayer?.Reset();
 
         _playerBoardRef?.Refresh();
@@ -186,9 +186,9 @@
         else ReturnToIndex();
 
         if (Player?.CurrentGame != null) Game = BearsDenGameServer.BattleshipServer.GetGame(Player.CurrentGame.GameName);
-        BattleshipPlayer = Game?.Players.ToList().Find(x => x.Player.PlayerName == Player?.PlayerName);
+        BattleshipPlayer = Game?.Players.ToList().Find(x => x.PlayerName == Player?.PlayerName);
         BattleshipPlayer?.ReadyBoard();
-        Opponent = Game?.Players.ToList().Find(x => x.Player.PlayerName != Player?.PlayerName);
+        Opponent = Game?.Players.ToList().Find(x => x.PlayerName != Player?.PlayerName);
         Game?.PlayerJoined();
         if (Game != null) Game.UpdateGameState += Refresh;
         if (Game != null) Game.UpdateGamePlayers += PlayerRefresh;

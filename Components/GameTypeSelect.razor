@@ -1,5 +1,64 @@
-<h3>GameTypeSelect</h3>
+<MatSelectItem Items="OptionsList" Label="@Label" Value="@Value.ToString()" ValueChanged="(string value) => ChangeEnumValue(value)"/>
 
+@typeparam TValue
 @code {
+
+    [Parameter]
+    public TValue Value { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public List<TValue> Options { get; set; }
+
+    private List<string> OptionsList = new List<string>();
+
+    private Type type;
+
+    protected override Task OnInitializedAsync()
+    {
+       
+        type = Value.GetType();
+        if (type.IsEnum && (Options == null || !Options.Any()))
+        {
+            OptionsList = Enum.GetNames(type).ToList();
+        }
+        return base.OnInitializedAsync();
+    }
+
+    private void ChangeEnumValue(object value)
+    {
+        try
+        {
+            var parsedEnum = Convert.ChangeType(Enum.Parse(type, value.ToString()), type);
+            Value = (TValue) parsedEnum;
+            ValueChanged.InvokeAsync(Value);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
     
+    private void ChangeValue(TValue value)
+    {
+        try
+        {
+            Value = value;
+            ValueChanged.InvokeAsync(Value);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
 }

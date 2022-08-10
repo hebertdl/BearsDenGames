@@ -1,13 +1,13 @@
 namespace BearsDenGames.Models.Battleship;
 
-public class BattleshipPlayer
+public class BattleshipPlayer : IPlayer
 {
-    public BattleshipPlayer(Player player)
+    public BattleshipPlayer(IPlayer player)
     {
         Player = player;
     }
 
-    public Player Player { get; }
+    private IPlayer Player { get; }
     public Ships Ships { get; private set; } = new();
     public BattleshipGameBoard? BattleshipGameBoard { get; private set; }
 
@@ -20,6 +20,18 @@ public class BattleshipPlayer
     public void ReadyBoard()
     {
         BattleshipGameBoard = new(Ships.FleetCells);
+    }
+
+    public string? PlayerName
+    {
+        get => Player.PlayerName;
+        set => Player.PlayerName = value;
+    }
+
+    public CurrentGame? CurrentGame
+    {
+        get => Player.CurrentGame;
+        set => Player.CurrentGame = value;
     }
 
     public void ClearGame()

@@ -1,27 +1,25 @@
 using BearsDenGames.Interfaces;
 
-namespace BearsDenGames.Models.Battleship;
+namespace BearsDenGames.Models.ConnectFour;
 
-public class BattleshipGame : Game<BattleshipPlayer>
+public class ConnectFourGame : Game<IPlayer>
 {
     private const int MaxPlayers = 2;
-
-    public BattleshipGame(string gameName, BattleshipPlayer battleshipPlayer, int idleTimeout) : base(gameName)
+    private GameState _gameState = GameState.Setup;
+    
+    public ConnectFourGame(string gameName, IPlayer player, int idleTimeout) : base(gameName)
     {
         IdleTimeout = idleTimeout;
-        AddPlayer(battleshipPlayer);
+        AddPlayer(player);
     }
 
     private int IdleTimeout { get; }
 
     public bool GameIsInvalid => IdleTime() > IdleTimeout || IsEmpty;
 
-    public BattleshipPlayer? CurrentTurn()
+    public IPlayer? CurrentTurn()
     {
-        if (PlayerTurns.Count > 0)
-            return PlayerTurns.Peek();
-        else return null;
-
+        return PlayerTurns.Count > 0 ? PlayerTurns.Peek() : null;
     }
 
     public override void DoPurge()
@@ -40,14 +38,14 @@ public class BattleshipGame : Game<BattleshipPlayer>
         UpdateGamePlayers?.Invoke();
     }
 
-    public sealed override void AddPlayer(BattleshipPlayer player)
+    public sealed override void AddPlayer(IPlayer player)
     {
         PlayerTurns.Enqueue(player);
     }
 
-    public override void RemovePlayer(BattleshipPlayer player)
+    public override void RemovePlayer(IPlayer player)
     {
-        PlayerTurns = new Queue<BattleshipPlayer>(PlayerTurns.Where(x => x != player));
+        PlayerTurns = new Queue<IPlayer>(PlayerTurns.Where(x => x != player));
 
         if (PlayerTurns.Count > 0 && player == PlayerTurns.Peek()) PlayerTurns.Dequeue();
         UpdateLastActivity();
@@ -58,13 +56,7 @@ public class BattleshipGame : Game<BattleshipPlayer>
 
     public void NewGame()
     {
-        var player1 = PlayerTurns.Dequeue();
-        PlayerTurns.Enqueue(player1);
-        var player2 = PlayerTurns.Dequeue();
-        PlayerTurns.Enqueue(player2);
-        player1.Reset();
-        player2.Reset();
-        UpdateGameState?.Invoke(GameState.Setup);
+        
     }
 
     public override void EndTurn()
@@ -72,7 +64,7 @@ public class BattleshipGame : Game<BattleshipPlayer>
         var endingPlayer = PlayerTurns.Dequeue();
         PlayerTurns.Enqueue(endingPlayer);
         UpdateLastActivity();
-        UpdateGameState?.Invoke(PlayerTurns.Peek().Ships.RemainingHits == 0 ? GameState.Complete : GameState.Ready);
+        UpdateGameState?.Invoke(_gameState);
     }
 
     public override int PlayerCount()

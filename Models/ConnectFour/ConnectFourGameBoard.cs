@@ -1,21 +1,22 @@
 ﻿using BearsDenGames.Interfaces;
+using BearsDenGames.Models.Battleship;
 
-namespace BearsDenGames.Models.Battleship;
+namespace BearsDenGames.Models.ConnectFour;
 
-public class BattleshipGameBoard : GameArea
+public class ConnectFourGameBoard : GameArea
 {
-    public BattleshipGameBoard() : base(LabelType.Letters, LabelType.Numbers, new(10, 10))
+    public ConnectFourGameBoard() : base(LabelType.Letters, LabelType.Numbers, new(7, 6))
     {
-        for (var row = 0; row < 10; row++)
-        for (var col = 0; col < 10; col++)
+        for (var row = 0; row < 6; row++)
+        for (var col = 0; col < 7; col++)
             GameBoardCells.Add(new Tuple<int, int>(col, row), new BoardCell(col, row, null));
     }
 
-    public BattleshipGameBoard(IReadOnlyDictionary<Tuple<int, int>, BoardCell> fleetCells) : base(LabelType.Letters,
-        LabelType.Numbers, new(10, 10))
+    public ConnectFourGameBoard(IReadOnlyDictionary<Tuple<int, int>, BoardCell> fleetCells) : base(LabelType.Letters,
+        LabelType.Numbers, new(7, 6))
     {
-        for (var row = 0; row < 10; row++)
-        for (var col = 0; col < 10; col++)
+        for (var row = 0; row < 7; row++)
+        for (var col = 0; col < 6; col++)
             GameBoardCells.Add(new Tuple<int, int>(col, row), GetCell(col, row, fleetCells));
     }
 
@@ -30,7 +31,7 @@ public class BattleshipGameBoard : GameArea
 
     public BoardCell? GetCell(int col, int row)
     {
-        if (col is < 0 or > 9 || row is < 0 or > 9) return null;
+        if (col is < 0 or > 7 || row is < 0 or > 6) return null;
         return GameBoardCells[new Tuple<int, int>(col, row)];
     }
 }

@@ -65,7 +65,7 @@
     public GameState GameState { get; set; }
 
     [Parameter]
-    public EventCallback<Player> GameOver { get; set; }
+    public EventCallback<IPlayer> GameOver { get; set; }
 
     private bool IsActive
     {
@@ -74,7 +74,7 @@
             var playerTurn = Game?.CurrentTurn();
 
             if (IsOpponent) return false;
-            return playerTurn?.Player.PlayerName == BattleshipPlayer?.Player.PlayerName;
+            return playerTurn?.PlayerName == BattleshipPlayer?.PlayerName;
 
         }
     }

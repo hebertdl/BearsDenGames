@@ -1,6 +1,6 @@
 namespace BearsDenGames.Models;
 
-public enum GameType
+public enum GameTypes
 {
     Battleship,
     ConnectFour

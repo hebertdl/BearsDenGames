@@ -3,7 +3,7 @@
 
 @if (Player == null)
 {
-    <SignIn PlayerCreated="@OnPlayerCreated"/>
+    <CSignIn PlayerCreated="@OnPlayerCreated"/>
 }
 else
 {
@@ -16,6 +16,10 @@ else
             <div class="MainPage-ButtonGrid">
                 <div class="MainPage-ButtonCreate">
                     <MatButton class="GlassButton" OnClick="@SetCreateGame" Label="Create Game"/>
+                    
+<div style="margin-bottom: 1em;">
+    <GameTypeSelect @bind-Value="@SelectedGameType" Label="Game Type" />
+</div>
                 </div>
                 <div class="MainPage-ButtonLeave">
                     <MatButton class="GlassButton" OnClick="@SignOut" Label="Sign Out"/>
@@ -24,15 +28,15 @@ else
 
         </div>
         <div class="MainPage-GameList">
-            <GameList Player="@Player"/>
+            <CGameList Player="@Player" GameType="@SelectedGameType"/>
         </div>
         <div class="MainPage-PlayerList">
-            <PlayerList/>
+            <CPlayerList/>
         </div>
     </div>
     @if (ShowCreateGame)
     {
-        <CreateGame Player="@Player" Cancelled="@OnCancelled"/>
+        <CreateGame Player="@Player" GameType="@SelectedGameType" Cancelled="@OnCancelled"/>
     }
 }
 
@@ -41,8 +45,8 @@ else
 
 @code
 {
-
-    private Player? Player { get; set; }
+    private GameTypes SelectedGameType { get; set; }
+    private IPlayer? Player { get; set; }
     private string? PlayerName { get; set; }
     private bool ShowCreateGame { get; set; }
 
@@ -51,7 +55,7 @@ else
         ShowCreateGame = true;
     }
 
-    private async Task OnPlayerCreated(Player player)
+    private async Task OnPlayerCreated(IPlayer player)
     {
         if (player.PlayerName != null) await ProtectedSessionStorage.SetAsync("PlayerName", player.PlayerName);
         Player = player;

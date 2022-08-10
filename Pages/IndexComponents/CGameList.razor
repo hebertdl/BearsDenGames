@@ -1,12 +1,12 @@
 @using BearsDenGames.Models.Battleship
 <h3>Game List</h3>
 <hr/> 
-  <MatSelectItem @bind-Value="@GameTypes" Items="@GameList"></MatSelectItem>
-@foreach (var game in BearsDenGameServer.AvailableGames(GameTypes))
+
+@foreach (var game in BearsDenGameServer.AvailableGames(GameType))
 {
     <div class="MainGameList-Grid">
         <div class="MainGameList-GameType">
-            @game.GameTypes
+            @game.GameType
         </div>
         <div class="MainGameList-GameName">
             @game.GameName
@@ -25,10 +25,9 @@
 
     [Parameter]
     public IPlayer? Player { get; set; }
-
-    private GameTypes GameTypes { get; set; }
-    private List<string> GmList { get; } = Enum.GetValues(typeof(GameTypes)).Cast<string>().ToList();
-
+    [Parameter]
+    public GameTypes GameType { get; set; }
+    
     protected override void OnInitialized()
     {
         BearsDenGameServer.BattleshipServer.BsGameListUpdated += Refresh;

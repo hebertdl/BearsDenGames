@@ -1,17 +1,19 @@
 @using BearsDenGames.Models.Battleship
+@using BearsDenGames.Models.ConnectFour
 <ModalScreen>
     <Header>
         <h3>Create Game</h3>
     </Header>
     <Body>
-        <MatTextField Style="width:100%" class="FullWidthInput"
-                      OnInput="@(ui => {onValueChange(ui.Value.ToString());})"
-                      OnKeyPress="onNameChange"
-                      @bind-Value="@GameName" Label="Game Name"></MatTextField>
-        @if (Disabled && GameName != "")
-        {
-            <p style="color:red">*This name is already in use!</p>
-        }
+    
+    <MatTextField Style="width:100%" class="FullWidthInput"
+                  OnInput="@(ui => { OnValueChange(ui.Value?.ToString() ?? string.Empty); })"
+                  OnKeyPress="OnNameChange"
+                  @bind-Value="@GameName" Label="Game Name"></MatTextField>
+    @if (Disabled && GameName != "")
+    {
+        <p style="color:red">*This name is already in use!</p>
+    }
     </Body>
     <Footer>
         <MatButton class="GlassButton" Disabled="@Disabled" OnClick="@OnCreateGame" Label="Create"></MatButton>
@@ -28,7 +30,9 @@
     public EventCallback Cancelled { get; set; }
 
     [Parameter]
-    public Player? Player { get; set; }
+    public IPlayer? Player { get; set; }
+    [Parameter]
+    public  GameTypes GameType { get; set; }
 
     private string _gameName = "";
 
@@ -45,24 +49,20 @@
     private bool Disabled { get; set; } = true;
 
 
-    private void onValueChange(string e)
+    private void OnValueChange(string e)
     {
         GameName = e;
-        Console.WriteLine(Disabled);
     }
 
-    private void onNameChange(KeyboardEventArgs e)
+    private void OnNameChange(KeyboardEventArgs e)
     {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            if (!Disabled) OnCreateGame();
-        }
+        if (e.Code != "Enter" && e.Code != "NumpadEnter") return;
+        if (!Disabled) OnCreateGame();
     }
 
     private void Validate()
     {
         Disabled = IsValid();
-        Console.WriteLine(Disabled);
     }
 
     private bool IsValid()
@@ -74,15 +74,39 @@
 
     private void OnCreateGame()
     {
-        if (Player != null)
-        {
-            BattleshipPlayer bsPlayer = new(Player);
-            Player.CurrentGame = new(GameName, GameType.Battleship);
+       if (Player== null ) {
+           Cancelled.InvokeAsync();
+           return;
+       }
+        
+            switch (GameType)
+            {
+                case GameTypes.Battleship:
+                    CreateBattleship(Player);
+                    break;
+                case GameTypes.ConnectFour:
+                    CreateConnectFour(Player);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+    }
+
+    private void CreateBattleship(IPlayer player)
+    {
+            BattleshipPlayer bsPlayer = new(player);
+            player.CurrentGame = new(GameName, GameTypes.Battleship);
             var game = new BattleshipGame(GameName, bsPlayer, BearsDenGameServer.DefaultIdleTimout);
 
             BearsDenGameServer.BattleshipServer.AddGame(game);
             NavManager.NavigateTo("Battleship?Game=" + GameName);
-        }
-        else Cancelled.InvokeAsync();
+    }
+    private void CreateConnectFour(IPlayer player)
+    {
+        player.CurrentGame = new(GameName, GameTypes.ConnectFour);
+        var game = new ConnectFourGame(GameName, player, BearsDenGameServer.DefaultIdleTimout);
+
+        BearsDenGameServer.ConnectFourServer.AddGame(game);
+        NavManager.NavigateTo("ConnectFour?Game=" + GameName);
     }
     } 

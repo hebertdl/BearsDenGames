@@ -4,29 +4,29 @@ namespace BearsDenGames.Services;
 
 public class PlayerServer
 {
-    private List<Player>? Players { get; } = new();
+    private List<IPlayer>? Players { get; } = new();
 
-    public List<Player>? GetPlayers()
+    public List<IPlayer>? GetPlayers()
     {
         return Players;
     }
 
-    public Player? GetPlayer(string? playerName)
+    public IPlayer? GetPlayer(string? playerName)
     {
         return Players?.Find(x => x.PlayerName?.ToUpper() == playerName?.Trim().ToUpper());
     }
 
-    internal void AddPlayer(Player? player)
+    internal void AddPlayer(IPlayer? player)
     {
         if (player == null || string.IsNullOrEmpty(player.PlayerName)) return;
-        player.PlayerName.Trim();
+        player.PlayerName = player.PlayerName.Trim();
         Players?.Add(player);
         PlayerListUpdated?.Invoke();
     }
 
     public event Action? PlayerListUpdated;
 
-    internal void RemovePlayer(Player? player)
+    internal void RemovePlayer(IPlayer? player)
     {
         if (player == null) return;
         Players?.Remove(player);

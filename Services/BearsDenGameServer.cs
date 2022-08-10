@@ -13,11 +13,19 @@ public class BearsDenGameServer
 
     public PlayerServer PlayerServer { get; } = new();
     public BattleshipServer BattleshipServer { get; } = new();
-
-    public IEnumerable<CurrentGame> AvailableGames()
+    public ConnectFourServer ConnectFourServer { get; } = new();
+    
+    public IEnumerable<CurrentGame> AvailableGames(GameTypes gameTypes)
     {
-        return BattleshipServer.AvailableGames()
-            .Select(availGame => new CurrentGame(availGame.GameName, GameType.Battleship)).ToList();
+        return gameTypes switch
+        {
+            GameTypes.Battleship => BattleshipServer.AvailableGames()
+                .Select(availGame => new CurrentGame(availGame.GameName, GameTypes.Battleship)),
+            GameTypes.ConnectFour => ConnectFourServer.AvailableGames()
+                .Select(availGame => new CurrentGame(availGame.GameName, GameTypes.ConnectFour)),
+            _ => BattleshipServer.AvailableGames()
+                .Select(availGame => new CurrentGame(availGame.GameName, GameTypes.Battleship))
+        };
     }
 
     public void DoPurge()
