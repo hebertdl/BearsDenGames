@@ -7,7 +7,7 @@
                 @player.PlayerName
             </div>
             <div class="MainList-GameType">
-                @player.CurrentGame?.GameType
+                @player.CurrentGame?.GameTypes
             </div>
             <div class="MainList-GameName">
                 @player.CurrentGame?.GameName
@@ -19,7 +19,7 @@
 
 @code {
 
-    private IEnumerable<Player>? Players { get; set; }
+    private IEnumerable<IPlayer>? Players { get; set; }
 
     protected override void OnInitialized()
     {

@@ -4,8 +4,8 @@
     </Header>
     <Body>
         <MatTextField Style="width:100%"
-                      OnInput="@(ui => {onValueChange(ui.Value.ToString());})"
-                      OnKeyPress="onNameChange" class="FullWidthInput" 
+                      OnInput="@(ui => {OnValueChange(ui.Value?.ToString() ?? string.Empty);})"
+                      OnKeyPress="OnNameChange" class="FullWidthInput" 
                       @bind-Value="@PlayerName" Label="Name"></MatTextField>
         @if (Disabled && PlayerName != "")
         {
@@ -22,7 +22,7 @@
 @code {
 
     [Parameter]
-    public EventCallback<Player> PlayerCreated { get; set; }
+    public EventCallback<IPlayer> PlayerCreated { get; set; }
 
     private string _playerName = "";
 
@@ -40,20 +40,17 @@
     private bool Disabled { get; set; } = true;
 
 
-    private void onValueChange(string e)
+    private void OnValueChange(string e)
     {
         PlayerName = e;
 
         Console.WriteLine(Disabled);
     }
 
-    private void onNameChange(KeyboardEventArgs e)
+    private void OnNameChange(KeyboardEventArgs e)
     {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            if (!Disabled) CreatePlayer();
-        }
-
+        if (e.Code != "Enter" && e.Code != "NumpadEnter") return;
+        if (!Disabled) CreatePlayer();
     }
     private void Validate()
     {
@@ -64,14 +61,13 @@
     private bool IsValid()
     {
         if (PlayerName == "") return true;
-        if (BearsDenGameServer.PlayerServer.GetPlayer(PlayerName) != null) return true;
-        return false;
+        return BearsDenGameServer.PlayerServer.GetPlayer(PlayerName) != null;
     }
 
 
     private void CreatePlayer()
     {
-        Player player = new(PlayerName);
+        BdgPlayer player = new(_playerName);
         BearsDenGameServer.PlayerServer.AddPlayer(player);
         PlayerCreated.InvokeAsync(player);
     }

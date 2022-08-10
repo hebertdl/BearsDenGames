@@ -1,0 +1,105 @@
+@using BearsDenGames.Models.Battleship
+@using BearsDenGames.Models.ConnectFour
+@if (Board != null)
+{
+    <div class="BsBoard-Main">
+        <div class="BsBoard-Title">
+            <h3>@BoardTitle</h3>
+        </div>
+        <div class="BsBoard-Status">
+            @if (IsActive && GameState == GameState.Ready)
+            {
+                <MatFAB Label="Your Turn" />
+            }
+        </div>
+        <div class="BsBoard-Board">
+            <table class="BsBoard">
+                <tr>
+                    <td class="BsBaseCell BsEmptyCell" />
+                    @for (var col = 0; col < Board.ColCount; col++)
+                    {
+                        <td class="BsHeaderCell BsBaseCell">
+                            @Board.ColLabel(col)
+                        </td>
+                    }
+                </tr>
+
+                @for (var row = 0; row < Board.RowCount; row++)
+                {
+                    <tr>
+                        <td class="BsHeaderCell BsBaseCell">@Board.RowLabel(row)</td>
+                        @for (var col = 0; col < Board.ColCount; col++)
+                        {
+                            var boardCell = GetCell(col, row);
+                            <td class="BsBaseCell " onclick="@(() => { if (boardCell != null) {OnCellClick(boardCell); } })">
+                                <div class="BsCellContainer">
+                                    <div class=" @boardCell?.CellStyle()"></div>
+                                </div>&nbsp;
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public ConnectFourGame? Game { get; set; }
+
+    [Parameter]
+    public BdgPlayer? Player { get; set; }
+
+    [Parameter]
+    public BdgPlayer? Opponent { get; set; }
+    
+    [Parameter]
+    public ConnectFourGameBoard? Board { get; set; } = new();
+ 
+    [Parameter]
+    public string? BoardTitle { get; set; }
+
+    [Parameter]
+    public GameState GameState { get; set; }
+
+    [Parameter]
+    public EventCallback<IPlayer> GameOver { get; set; }
+
+    private bool IsActive
+    {
+        get
+        {
+            var playerTurn = Game?.CurrentTurn();
+            return playerTurn?.PlayerName == Player?.PlayerName;
+
+        }
+    }
+
+    private void OnCellClick(BoardCell boardCell)
+    {
+        if (!IsActive) return;
+        
+        if (!boardCell.Active) return;
+        boardCell.Active = false;
+        Game?.EndTurn();
+        StateHasChanged();
+    }
+
+    private BoardCell? GetCell(int col, int row)
+    {
+        var bc = Board?.GetCell(col, row);
+        return bc;
+    }
+
+    public async void Refresh()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+    }
+
+    }

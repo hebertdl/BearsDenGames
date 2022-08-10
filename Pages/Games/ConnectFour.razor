@@ -1,0 +1,202 @@
+@page "/Battleship"
+@using BearsDenGames.Pages.Games.BattleshipComponents
+@using BearsDenGames.Models.Battleship
+
+<div class="BsPageMain">
+    <div class="BsPage-GameTitle">
+        <h3>Battleship - @Game?.GameName</h3>
+    </div>
+    <div class="BsPage-GameControls">
+        <div class="BsPage-ControlGrid">
+            @if (GameState == GameState.Setup)
+            {
+                <div class="BsPage-Randomize">
+                    <MatButton class="GlassButton" OnClick="@Randomize" Label="Randomize" />
+                </div>
+                <div class="BsPage-Ready">
+                    <MatButton class="GlassButton" OnClick="@SetReady" Label="Ready" />
+                </div>
+            }
+             @if (GameState == GameState.Ready)
+             {
+                
+                 <table>
+                      <tr>
+                          <td style="column-span: 4"> @BattleshipPlayer?.PlayerName</td>
+                          </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Carrier"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Battleship"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Destroyer"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.Submarine"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@BattleshipPlayer?.Ships.PatrolBoat"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <td style="column-span: 4">@Opponent?.PlayerName</td>
+                     </tr>
+
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Carrier"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Battleship"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Destroyer"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.Submarine"></ShipStatus>
+                     </tr>
+                     <tr>
+                         <ShipStatus Ship="@Opponent?.Ships.PatrolBoat"></ShipStatus>
+                     </tr>
+
+                 </table>
+                 
+             }
+
+            @if (GameState == GameState.Complete)
+            {
+                @if (Opponent?.Ships.RemainingHits == 0)
+                {
+                    <MatFAB Label="You Win!!!" Style="background-color: lawngreen; color: black; font-weight: bold;" />
+                }
+                else
+                {
+                    <MatFAB Label="Game Over" Style="background-color: gray; color: white" />
+                }
+                <MatButton class="GlassButton" OnClick="@NewGame" Label="New Game" />
+            }
+            <div class="BsPage-Leave">
+                <MatButton class="GlassButton" OnClick="@LeaveGame" Label="Leave" />
+            </div>
+        </div>
+    </div>
+    <div class="BsPage-PlayerBoard">
+
+        @if (GameState == GameState.Setup)
+        {
+            <BattleshipBoardSetup Game="@Game"
+                              GameState="@GameState"
+                              BattleshipPlayer="@BattleshipPlayer"
+                              Board="@BattleshipPlayer?.BattleshipGameBoard"
+                              BoardTitle="@BattleshipPlayer?.PlayerName" />
+        }
+        else
+        {
+            <BattleshipBoard @ref="_playerBoardRef" Game="@Game"
+                         GameState="@GameState"
+                         BattleshipPlayer="@BattleshipPlayer"
+                         Board="@BattleshipPlayer?.BattleshipGameBoard"
+                         BoardTitle="@BattleshipPlayer?.PlayerName" />
+        }
+    </div>
+    <div class="BsPage-OpponentBoard">
+        <BattleshipBoard @ref="_opponentBoardRef" Game="@Game"
+                         GameState="@GameState"
+                         BattleshipPlayer="@Opponent"
+                         Board="@Opponent?.BattleshipGameBoard"
+                         IsOpponent="true"
+                         BoardTitle="@Opponent?.PlayerName" />
+    </div>
+</div>
+
+
+@inject BearsDenGameServer BearsDenGameServer
+@inject NavigationManager NavManager
+@inject ProtectedSessionStorage ProtectedSessionStorage
+
+@code {
+    BattleshipBoard? _playerBoardRef;
+    BattleshipBoard? _opponentBoardRef;
+
+    private BattleshipGame? Game { get; set; }
+    private BattleshipPlayer? BattleshipPlayer { get; set; }
+    private BattleshipPlayer? Opponent { get; set; }
+    private GameState GameState { get; set; } = GameState.Setup;
+
+    [CascadingParameter(Name = "Player")]
+    private IPlayer? Player { get; set; }
+
+    private void SetReady()
+    {
+        BattleshipPlayer?.ReadyBoard();
+        GameState = GameState.Ready;
+    }
+
+    private void NewGame()
+    {
+        Game?.NewGame();
+    }
+
+    private void Randomize()
+    {
+        BattleshipPlayer?.Ships.Randomize();
+        StateHasChanged();
+    }
+
+    private void LeaveGame()
+    {
+        if (BattleshipPlayer != null)
+        {
+            Game?.RemovePlayer(BattleshipPlayer);
+            BattleshipPlayer.CurrentGame = null;
+        }
+        Dispose();
+        ReturnToIndex();
+    }
+
+    private void ReturnToIndex()
+    {
+        NavManager.NavigateTo("/");
+    }
+
+    private async void PlayerRefresh()
+    {
+        Opponent = Game?.Players.ToList().Find(x => x.PlayerName != Player?.PlayerName);
+        BattleshipPlayer?.Reset();
+
+        _playerBoardRef?.Refresh();
+        _opponentBoardRef?.Refresh();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void Refresh(GameState gameState)
+    {
+        GameState = gameState;
+        _playerBoardRef?.Refresh();
+        _opponentBoardRef?.Refresh();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedSessionStorage.GetAsync<string>("PlayerName");
+        var playerName = result.Success ? result.Value : "";
+        var player = BearsDenGameServer.PlayerServer.GetPlayer(playerName);
+        if (player != null) Player = player;
+        else ReturnToIndex();
+
+        if (Player?.CurrentGame != null) Game = BearsDenGameServer.BattleshipServer.GetGame(Player.CurrentGame.GameName);
+        BattleshipPlayer = Game?.Players.ToList().Find(x => x.PlayerName == Player?.PlayerName);
+        BattleshipPlayer?.ReadyBoard();
+        Opponent = Game?.Players.ToList().Find(x => x.PlayerName != Player?.PlayerName);
+        Game?.PlayerJoined();
+        if (Game != null) Game.UpdateGameState += Refresh;
+        if (Game != null) Game.UpdateGamePlayers += PlayerRefresh;
+    }
+
+    private void Dispose()
+    {
+        if (Game != null) Game.UpdateGameState -= Refresh;
+    }
+
+}
